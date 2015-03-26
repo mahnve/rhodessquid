@@ -11,7 +11,7 @@
                  [liberator "0.12.2"]
                  [compojure "1.3.2"]
                  [ring/ring-core "1.3.2"]
-                 [honeysql "0.5.1"]
+                 [yesql "0.4.0"]
                  [ragtime "0.3.8"]
                  [org.clojure/tools.nrepl "0.2.8"]
                  [expectations "2.0.9"]]
