@@ -1,4 +1,4 @@
-(ns cairodog.core
+(ns rhodessquid.core
   (:require [liberator.core :refer [defresource]]
             [ring.middleware.params :refer [wrap-params]]
             [compojure.core :refer :all]
@@ -14,7 +14,8 @@
   (let [key (get-in ctx [:request :params :key])
         lang (get-in ctx [:request :params :lang])]
     (if-let [word (get-in @stored-words [key lang])]
-      {:word word})))
+      {:word word}
+      false)))
 
 (defn update-word [key]
   "hello")
@@ -25,7 +26,7 @@
   :allowed-methods [:get :post :put]
   :handle-ok return-word
   :post! update-word
-  :handle-not-found "word for key/lang not found")
+  :handle-not-found (str "Word for key: '" key "', lang: '" lang "' not found"))
 
 (defroutes app
   (GET "/words/:key/:lang" [key lang]  (words key lang)))
