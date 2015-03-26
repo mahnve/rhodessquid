@@ -14,6 +14,8 @@
                  [yesql "0.4.0"]
                  [ragtime "0.3.8"]
                  [org.clojure/tools.nrepl "0.2.8"]
+                 [postgresql/postgresql "8.4-702.jdbc4"]
                  [expectations "2.0.9"]]
+
   :ragtime {:migrations ragtime.sql.files/migrations
             :database "jdbc:postgresql://localhost:5432/rhodessquid"})
