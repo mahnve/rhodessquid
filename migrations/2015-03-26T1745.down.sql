@@ -1,1 +1,1 @@
-drop table words;
+drop table phrases;

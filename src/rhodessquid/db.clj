@@ -1,2 +1,4 @@
-(ns clojure.core
-  (:require '[yesql.core :refer [defquery]]))
+(ns rhodessquid.db
+  (:require [yesql.core :refer [defqueries]]))
+
+(defqueries "rhodessquid/queries.sql")

@@ -2,34 +2,42 @@
   (:require [liberator.core :refer [defresource]]
             [ring.middleware.params :refer [wrap-params]]
             [compojure.core :refer :all]
-            [compojure.route :as route]))
+            [clojure.tools.logging :as log]
+            [compojure.route :as route]
+            [rhodessquid.db :as db]))
 
-(def stored-words
-  (atom { "cat" {"en" "Cat" "sv" "Katt"}}))
+(def db-spec {:classname "org.postgresql.Driver"
+              :subprotocol "postgresql"
+              :subname "//localhost:5432/rhodessquid"
+              :user "mahnve"})
 
-(defn return-word [ctx]
-  (get-in ctx [:word]))
+(defn translation-for
+  ([ctx]
+   (let [key (get-in ctx [:request :params :key])
+         lang (get-in ctx [:request :params :lang])]
+     (translation-for key lang)))
+  ([key lang]
+   (-> (db/find-translation db-spec lang key) first :translation)))
 
-(defn word-for [ctx]
-  (let [key (get-in ctx [:request :params :key])
-        lang (get-in ctx [:request :params :lang])]
-    (if-let [word (get-in @stored-words [key lang])]
-      {:word word}
-      false)))
+(defn update-translation
+  ([ctx]
+   (let [key (get-in ctx [:request :params :key])
+         lang (get-in ctx [:request :params :lang])
+         body(slurp (get-in ctx [:request :body]))]
+     (update-translation key lang body)))
+  ([key lang body]
+   (db/insert-word db-spec key {lang body})))
 
-(defn update-word [key]
-  "hello")
-
-(defresource words [key lang]
+(defresource translations [key lang]
+  :allowed-methods [:get :post]
   :available-media-types ["text/plain"]
-  :exists? word-for
-  :allowed-methods [:get :post :put]
-  :handle-ok return-word
-  :post! update-word
-  :handle-not-found (str "Word for key: '" key "', lang: '" lang "' not found"))
+  :exists? translation-for
+  :handle-ok translation-for
+  :post! update-translation
+  :handle-not-found (str "Translation for key: '" key "', lang: '" lang "' not found"))
 
 (defroutes app
-  (GET "/words/:key/:lang" [key lang]  (words key lang)))
+  (ANY "/phrases/:key/:lang" [key lang]  (translations key lang)))
 
 (def handler
   (-> app wrap-params))
