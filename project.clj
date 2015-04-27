@@ -12,6 +12,7 @@
                  [compojure "1.3.2"]
                  [org.clojure/data.json "0.2.6"]
                  [ring/ring-core "1.3.2"]
+                 [org.clojure/java.jdbc "0.3.6"]
                  [yesql "0.4.0"]
                  [org.clojure/tools.logging "0.3.1"]
                  [log4j/log4j "1.2.16"]
