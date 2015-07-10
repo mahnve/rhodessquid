@@ -5,7 +5,8 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :plugins [[lein-ring "0.8.11"]
             [ragtime/ragtime.lein "0.3.8"]
-            [cider/cider-nrepl "0.9.0-SNAPSHOT"]]
+            [cider/cider-nrepl "0.9.0-SNAPSHOT"]
+            [refactor-nrepl "1.1.0"]]
   :ring {:handler rhodessquid.core/handler}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [liberator "0.12.2"]
