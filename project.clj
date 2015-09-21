@@ -37,20 +37,25 @@
                                         :optimizations :none
                                         :pretty-print true}}}}
 
-  :dependencies [[org.clojure/clojure "1.6.0"]
+  :dependencies [[org.clojure/clojure "1.7.0"]
                  [liberator "0.12.2"]
-                 [compojure "1.3.2"]
                  [org.clojure/data.json "0.2.6"]
-                 [ring/ring-core "1.3.2"]
-                 [org.clojure/java.jdbc "0.3.6"]
-                 [yesql "0.4.0"]
+                 [ring "1.4.0"]
+                 [ring/ring-defaults "0.1.5"]
+                 [compojure "1.4.0"]
+                 [hiccup "1.0.5"]
+                 [org.clojure/java.jdbc "0.4.2"]
+                 [yesql "0.4.2"]
                  [org.clojure/tools.logging "0.3.1"]
                  [log4j/log4j "1.2.16"]
-                 [ragtime "0.3.8"]
+                 [ragtime "0.3.9"]
                  [org.clojure/tools.nrepl "0.2.8"]
                  [postgresql/postgresql "8.4-702.jdbc4"]
-                 [expectations "2.0.9"]
+                 [expectations "2.1.1"]
                  [org.clojure/clojurescript "1.7.107" :scope "provided"]
+                 [reagent "0.5.1-rc"]
+                 [reagent-forms "0.5.6"]
+                 [reagent-utils "0.1.5"]
                  [secretary "1.2.3"]
                  [cljsjs/react "0.13.3-1"]
                  [prone "0.8.2"]
@@ -60,8 +65,8 @@
             :database "jdbc:postgresql://localhost:5432/rhodessquid"}
 
   :profiles {:dev {:repl-options {:init-ns rhodessquid.repl}
-                   :dependencies [[ring/ring-mock]
-                                  [ring/ring-devel]
+                   :dependencies [[ring/ring-mock "0.2.0"]
+                                  [ring/ring-devel "1.4.0"]
                                   [lein-figwheel "0.3.7"]
                                   [org.clojure/tools.nrepl "0.2.10"]
                                   [pjstadig/humane-test-output "0.7.0"]]
