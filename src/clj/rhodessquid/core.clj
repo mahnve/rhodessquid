@@ -3,12 +3,13 @@
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
             [ring.middleware.reload :refer [wrap-reload]]
-            [compojure.core :refer :all]
+            [compojure.core :refer [ANY GET defroutes]]
             [clojure.tools.logging :as log]
             [compojure.route :as route]
             [rhodessquid.db :as db]
             [clojure.java.jdbc :as jdbc]
             [hiccup.core :refer :all]
+            [hiccup.page :refer [include-js include-css]]
             [environ.core :refer [env]]
             [prone.middleware :refer [wrap-exceptions]]))
 
@@ -46,7 +47,8 @@
 
 
 (defn client-page []
-  (html [:body [:div {:id "root"}]]))
+  (html [:html [:body [:div {:id "root"}]]
+         (include-js "js/app.js")]))
 
 (defresource translation [key lang]
   :allowed-methods [:get :post :put]
@@ -62,14 +64,14 @@
   :available-media-types ["text/plain"]
   :handle-ok list-phrases)
 
-(defroutes app
+(defroutes routes
   (ANY "/phrases/:key/:lang" [key lang]  (translation key lang))
   (ANY "/phrases" [] (translations))
   (GET "/" [] (client-page)))
 
 (def handler
-  (-> app wrap-params))
+  (-> routes wrap-params))
 
 (def app
-  (let [handler (wrap-defaults #'app site-defaults)]
+  (let [handler (wrap-defaults #'routes site-defaults)]
     (if (env :dev) (-> handler wrap-exceptions wrap-reload) handler)))
