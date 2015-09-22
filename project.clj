@@ -83,7 +83,7 @@
                               :server-port 3449
                               :nrepl-port 7002
                               :css-dirs ["resources/public.css"]
-                              :ring-handler rhodessquid.core/handler}
+                              :ring-handler rhodessquid.core/app}
 
                    :env {:dev true}
 

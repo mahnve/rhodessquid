@@ -1,11 +1,16 @@
 (ns rhodessquid.core
   (:require [liberator.core :refer [defresource]]
             [ring.middleware.params :refer [wrap-params]]
+            [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
+            [ring.middleware.reload :refer [wrap-reload]]
             [compojure.core :refer :all]
             [clojure.tools.logging :as log]
             [compojure.route :as route]
             [rhodessquid.db :as db]
-            [clojure.java.jdbc :as jdbc]))
+            [clojure.java.jdbc :as jdbc]
+            [hiccup.core :refer :all]
+            [environ.core :refer [env]]
+            [prone.middleware :refer [wrap-exceptions]]))
 
 (def db-spec {:classname "org.postgresql.Driver"
               :subprotocol "postgresql"
@@ -39,6 +44,10 @@
   ([_] (list-phrases))
   ([] (pr-str (db/all-phrases db-spec))))
 
+
+(defn client-page []
+  (html [:body [:div {:id "root"}]]))
+
 (defresource translation [key lang]
   :allowed-methods [:get :post :put]
   :available-media-types ["text/plain"]
@@ -55,7 +64,12 @@
 
 (defroutes app
   (ANY "/phrases/:key/:lang" [key lang]  (translation key lang))
-  (ANY "/phrases" [] (translations)))
+  (ANY "/phrases" [] (translations))
+  (GET "/" [] (client-page)))
 
 (def handler
   (-> app wrap-params))
+
+(def app
+  (let [handler (wrap-defaults #'app site-defaults)]
+    (if (env :dev) (-> handler wrap-exceptions wrap-reload) handler)))
