@@ -47,7 +47,7 @@
 
 
 (defn client-page []
-  (html [:html [:body [:div {:id "root"}]]
+  (html [:html [:body [:div {:id "app"}]]
          (include-js "js/app.js")]))
 
 (defresource translation [key lang]
@@ -69,8 +69,6 @@
   (ANY "/phrases" [] (translations))
   (GET "/" [] (client-page)))
 
-(def handler
-  (-> routes wrap-params))
 
 (def app
   (let [handler (wrap-defaults #'routes site-defaults)]

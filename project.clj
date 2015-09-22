@@ -10,7 +10,7 @@
             [lein-environ "1.0.0"]
             [lein-asset-minifier "0.2.2"]]
 
-  :ring {:handler rhodessquid.core/handler
+  :ring {:handler rhodessquid.core/app
          :uberwar-name "rhodessquid.war"}
 
   :min-lein-version "2.5.0"
@@ -59,7 +59,8 @@
                  [secretary "1.2.3"]
                  [cljsjs/react "0.13.3-1"]
                  [prone "0.8.2"]
-                 [environ "1.0.0"]]
+                 [environ "1.0.0"]
+                 [cljs-ajax "0.3.14"]]
 
   :ragtime {:migrations ragtime.sql.files/migrations
             :database "jdbc:postgresql://localhost:5432/rhodessquid"}

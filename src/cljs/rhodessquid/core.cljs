@@ -1,10 +1,11 @@
 (ns rhodessquid.core
-    (:require [reagent.core :as reagent :refer [atom]]
-              [reagent.session :as session]
-              [secretary.core :as secretary :include-macros true]
-              [goog.events :as events]
-              [goog.history.EventType :as EventType])
-    (:import goog.History))
+  (:require [reagent.core :as reagent :refer [atom]]
+            [reagent.session :as session]
+            [secretary.core :as secretary :include-macros true]
+            [goog.events :as events]
+            [goog.history.EventType :as EventType]
+            [ajax.core :refer [GET]])
+  (:import goog.History))
 
 ;; -------------------------
 ;; Views
@@ -20,6 +21,11 @@
 (defn current-page []
   [:div [(session/get :current-page)]])
 
+(defn log-me [response]
+  (.log js/console (str response)))
+
+(defn get-all []
+  GET "/phrases" {:handler log-me})
 ;; -------------------------
 ;; Routes
 (secretary/set-config! :prefix "#")
