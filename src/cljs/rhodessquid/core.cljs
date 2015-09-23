@@ -21,11 +21,11 @@
 (defn current-page []
   [:div [(session/get :current-page)]])
 
-(defn log-me [response]
+(defn log-me! [response]
   (.log js/console (str response)))
 
 (defn get-all []
-  GET "/phrases" {:handler log-me})
+  (GET "/phrases" {:handler log-me!}))
 ;; -------------------------
 ;; Routes
 (secretary/set-config! :prefix "#")
