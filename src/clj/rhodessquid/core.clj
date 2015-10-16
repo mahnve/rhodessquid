@@ -52,7 +52,7 @@
 
 (defresource translation [key lang]
   :allowed-methods [:get :post :put]
-  :available-media-types ["text/plain"]
+  :available-media-types ["application/edn"]
   :exists? translation-for
   :handle-ok (fn [{phrase :phrase}] phrase)
   :put! write-translation!

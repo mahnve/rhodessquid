@@ -15,7 +15,7 @@
 
   :min-lein-version "2.5.0"
   :uberjar-name "rhodessquid.jar"
-
+  :hooks [leiningen.cljsbuild]
   :main rhodessquid.core
 
   :clean-targets ^{:protect false} [:target-path

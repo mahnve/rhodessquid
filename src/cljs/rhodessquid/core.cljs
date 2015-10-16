@@ -4,15 +4,25 @@
             [secretary.core :as secretary :include-macros true]
             [goog.events :as events]
             [goog.history.EventType :as EventType]
-            [ajax.core :refer [GET]])
+            [ajax.core :refer [GET]]
+            [cljs.reader :refer [read-string]])
   (:import goog.History))
+
+;; -------------------------
+;; State
+
+(defonce state (reagent/atom {:phrases []}))
 
 ;; -------------------------
 ;; Views
 
 (defn home-page []
   [:div [:h2 "Welcome to rhodessquid"]
-   [:div [:a {:href "#/about"} "go to about page"]]])
+   [:div [:a {:href "#/about"} "goto"]]
+   [:ul
+    (doseq [phrase (:phrases @state)]
+      [:li (:phrase phrase) ]
+      [:p "I'm here"])]])
 
 (defn about-page []
   [:div [:h2 "About rhodessquid"]
@@ -20,12 +30,20 @@
 
 (defn current-page []
   [:div [(session/get :current-page)]])
-
+nnn
 (defn log-me! [response]
   (.log js/console (str response)))
 
+(defn update-state [response]
+  (swap! state assoc :phrases response))
+
+
+(defn log-state []
+  (log-me! @state))
+
 (defn get-all []
-  (GET "/phrases" {:handler log-me!}))
+  (GET "/phrases" {:handler update-state
+                   :response-format :edn}))
 ;; -------------------------
 ;; Routes
 (secretary/set-config! :prefix "#")
